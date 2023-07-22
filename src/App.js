@@ -6,9 +6,11 @@ import ProtectedRoute from './components/ProtectedRoute'
 
 import Home from './components/Home'
 import LoginForm from './components/LoginForm'
+import AboutJobDetail from './components/AboutJobDetail'
+import Jobs from './components/Jobs'
 
 // These are the lists used in the application. You can move them to any component needed.
-const employmentTypesList = [
+/* const employmentTypesList = [
   {
     label: 'Full Time',
     employmentTypeId: 'FULLTIME',
@@ -44,13 +46,15 @@ const salaryRangesList = [
     salaryRangeId: '4000000',
     label: '40 LPA and above',
   },
-]
+] */
 
 // Replace your code here
 const App = () => (
   <Switch>
-    <Route exact path="/loginForm" component={LoginForm} />
+    <Route exact path="/login" component={LoginForm} />
     <ProtectedRoute exact path="/" component={Home} />
+    <ProtectedRoute exact path="/jobs" component={Jobs} />
+    <ProtectedRoute exact path="/jobs/:id" component={AboutJobDetail} />
   </Switch>
 )
 

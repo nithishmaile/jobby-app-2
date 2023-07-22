@@ -1,0 +1,37 @@
+.job-details-card {
+  background-color: #272727;
+  border-radius: 15px;
+  list-style: none;
+  color: #ffffff;
+  margin-top: 40px;
+  padding: 15px;
+}
+.title-heading {
+  font-family: 'Roboto';
+  font-size: 20px;
+  margin-bottom: 4px;
+}
+.rating {
+  font-family: 'Roboto';
+  font-size: 18px;
+  margin-left: 5px;
+  margin-right: 20px;
+}
+.company-logo {
+  height: 60px;
+  width: 60px;
+  margin-right: 10px;
+}
+.company-rating {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+.package-location-type {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.link {
+  text-decoration: none;
+}

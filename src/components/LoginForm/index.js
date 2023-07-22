@@ -2,6 +2,8 @@ import {Component} from 'react'
 
 import Cookies from 'js-cookie'
 
+import {Redirect} from 'react-router-dom'
+
 import './index.css'
 
 class LoginForm extends Component {
@@ -47,6 +49,11 @@ class LoginForm extends Component {
     const {errorMessage} = this.state
 
     const errorText = errorMessage && `*Username and Password didn't  match`
+    const jwtToken = Cookies.get('token')
+
+    if (jwtToken !== undefined) {
+      return <Redirect to="/" />
+    }
 
     return (
       <div className="login-container">

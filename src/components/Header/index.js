@@ -14,28 +14,32 @@ const Header = props => {
   const {history} = props
 
   const onClickLogout = () => {
-    Cookies.remove('jwt_token')
-    history.replace('/loginForm')
+    Cookies.remove('token')
+    history.replace('/login')
   }
 
   return (
     <>
       <nav className="mobile-nav-container">
-        <img
-          src="https://assets.ccbp.in/frontend/react-js/logo-img.png"
-          alt="website logo"
-          className="nav-logo"
-        />
+        <Link to="/">
+          <img
+            src="https://assets.ccbp.in/frontend/react-js/logo-img.png"
+            alt="website logo"
+            className="nav-logo"
+          />
+        </Link>
         <div className="react-icons">
           <Link to="/">
             <AiFillHome color="#ffffff" size={34} />
           </Link>
-          <BsFillBriefcaseFill
-            color="#ffffff"
-            size={34}
-            className="react-icons"
-          />
-          <Link to="/loginForm">
+          <Link to="/jobs">
+            <BsFillBriefcaseFill
+              color="#ffffff"
+              size={34}
+              className="react-icons"
+            />
+          </Link>
+          <Link to="/login">
             <FiLogOut color="#ffffff" size={34} className="react-icons" />
           </Link>
         </div>
@@ -50,7 +54,9 @@ const Header = props => {
           <Link to="/">
             <h1 className="home-heading">Home</h1>
           </Link>
-          <h1 className="home-heading">Jobs</h1>
+          <Link to="/jobs">
+            <h1 className="home-heading">Jobs</h1>
+          </Link>
         </div>
         <button type="button" className="logout-button" onClick={onClickLogout}>
           Logout

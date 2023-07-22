@@ -5,7 +5,7 @@ import {Redirect, Route} from 'react-router-dom'
 const ProtectedRoute = props => {
   const jwtToken = Cookies.get('token')
   if (jwtToken === undefined) {
-    return <Redirect to="/Login" />
+    return <Redirect to="/login" />
   }
   return <Route {...props} />
 }

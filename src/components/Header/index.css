@@ -11,6 +11,7 @@
 }
 .react-icons {
   margin-left: 20px;
+  cursor: pointer;
 }
 .desktop-nav-container {
   display: none;
@@ -42,6 +43,7 @@
   border-width: 0px;
   height: 30px;
   width: 120px;
+  cursor: pointer;
 }
 @media screen and (min-width: 768px) {
   .mobile-nav-container {
