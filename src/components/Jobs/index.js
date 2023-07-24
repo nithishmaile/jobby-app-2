@@ -7,10 +7,6 @@ import JobsDetails from '../JobsDetails'
 
 import './index.css'
 
-// ?employment_type=${employmentType}&minimum_package=${salaryRange}&search=${searchInput}
-
-// employment_type=${employmentType}&
-
 const employmentTypesList = [
   {
     label: 'Full Time',
@@ -62,7 +58,7 @@ class Jobs extends Component {
     profileDetails: {},
     jobsDetails: [],
     jobsApiStatus: apiStatus.initial,
-    employmentType: '',
+    employmentType: [],
     salaryRange: '',
     searchInput: '',
     searchInputValue: '',
@@ -87,14 +83,33 @@ class Jobs extends Component {
   }
 
   onChangeCheckBox = event => {
-    console.log(event.target.value)
+    const {employmentType} = this.state
+    const inputNotInList = employmentType.filter(
+      eachItem => eachItem === event.target.id,
+    )
+    if (inputNotInList.length === 0) {
+      this.setState(
+        prevState => ({
+          employmentType: [...prevState.employmentType, event.target.id],
+        }),
+        this.getJobsDetails,
+      )
+    } else {
+      const filteredData = employmentType.filter(
+        eachItem => eachItem !== event.target.id,
+      )
+      this.setState(
+        prevState => ({employmentType: filteredData}),
+        this.getJobsDetails,
+      )
+    }
   }
 
   getJobsDetails = async () => {
-    const {salaryRange, searchInput} = this.state
+    const {salaryRange, searchInput, employmentType} = this.state
     this.setState({jobsApiStatus: apiStatus.inProgress})
     const jwtToken = Cookies.get('token')
-    const url = `https://apis.ccbp.in/jobs?minimum_package=${salaryRange}&search=${searchInput}`
+    const url = `https://apis.ccbp.in/jobs?employment_type=${employmentType}&minimum_package=${salaryRange}&search=${searchInput}`
     const options = {
       method: 'GET',
       headers: {
@@ -263,11 +278,14 @@ class Jobs extends Component {
                 <div>
                   <input
                     type="checkbox"
-                    id={eachType.label}
-                    value={eachType.employmentTypeId}
-                    onClick={this.onChangeCheckBox}
+                    id={eachType.employmentTypeId}
+                    onChange={this.onChangeCheckBox}
+                    key={eachType.employmentTypeId}
                   />
-                  <label htmlFor={eachType.label} className="employment-type">
+                  <label
+                    htmlFor={eachType.employmentTypeId}
+                    className="employment-type"
+                  >
                     {eachType.label}
                   </label>
                 </div>
@@ -279,7 +297,7 @@ class Jobs extends Component {
                   <input
                     type="radio"
                     id={eachType.label}
-                    value={eachType.salaryRangeId}
+                    // value={eachType.salaryRangeId}
                     name="salaryRange"
                     onChange={this.onChangeRadio}
                   />

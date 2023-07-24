@@ -5,6 +5,7 @@ import {MdLocationOn} from 'react-icons/md'
 import {BsFillBriefcaseFill} from 'react-icons/bs'
 
 import Header from '../Header'
+import SimilarJobs from '../SimilarJobs'
 
 import './index.css'
 
@@ -36,35 +37,38 @@ class AboutJobDetail extends Component {
       },
     }
     const response = await fetch(url, options)
-    const data = await response.json()
-    const updateJobDetail = [data.job_details].map(eachItem => ({
-      companyLogoUrl: eachItem.company_logo_url,
-      employmentType: eachItem.employment_type,
-      jobDescription: eachItem.job_description,
-      packagePerAnnum: eachItem.package_per_annum,
-      id: eachItem.id,
-      title: eachItem.title,
-      location: eachItem.location,
-      rating: eachItem.rating,
-      lifeAtCompany: {
-        description: eachItem.life_at_company.description,
-        imageUrl: eachItem.life_at_company.image_url,
-      },
-      skills: eachItem.skills.map(eachObj => ({
-        name: eachObj.name,
-        imageUrl: eachObj.image_url,
-      })),
-    }))
-    const updateSimilarJobs = data.similar_jobs.map(eachObj => ({
-      companyLogoUrl: eachObj.company_logo_url,
-      employmentType: eachObj.employment_type,
-      jobDescription: eachObj.job_description,
-      id: eachObj.id,
-      title: eachObj.title,
-      location: eachObj.location,
-      rating: eachObj.rating,
-    }))
     if (response.ok === true) {
+      const data = await response.json()
+      console.log(data)
+      const updateJobDetail = [data.job_details].map(eachItem => ({
+        companyLogoUrl: eachItem.company_logo_url,
+        companyWebsiteUrl: eachItem.company_website_url,
+        employmentType: eachItem.employment_type,
+        jobDescription: eachItem.job_description,
+        packagePerAnnum: eachItem.package_per_annum,
+        id: eachItem.id,
+        title: eachItem.title,
+        location: eachItem.location,
+        rating: eachItem.rating,
+        lifeAtCompany: {
+          description: eachItem.life_at_company.description,
+          imageUrl: eachItem.life_at_company.image_url,
+        },
+        skills: eachItem.skills.map(eachObj => ({
+          imageUrl: eachObj.image_url,
+          name: eachObj.name,
+        })),
+      }))
+
+      const updateSimilarJobs = data.similar_jobs.map(eachObj => ({
+        companyLogoUrl: eachObj.company_logo_url,
+        employmentType: eachObj.employment_type,
+        jobDescription: eachObj.job_description,
+        id: eachObj.id,
+        title: eachObj.title,
+        location: eachObj.location,
+        rating: eachObj.rating,
+      }))
       this.setState({
         aboutJobApiStatus: apiStatus.success,
         aboutJobDetails: updateJobDetail,
@@ -83,12 +87,12 @@ class AboutJobDetail extends Component {
       location,
       jobDescription,
       employmentType,
+      lifeAtCompany,
       rating,
+      skills,
       id,
       packagePerAnnum,
-      lifeAtCompany,
-      skills,
-    } = aboutJobDetails[0]
+    } = aboutJobDetails
 
     /* const updateLifeAtCompany = {
       description: lifeAtCompany.description,
@@ -132,18 +136,24 @@ class AboutJobDetail extends Component {
         <hr />
         <h1>Description</h1>
         <p>{jobDescription}</p>
-        <h1>Skills</h1>
-        <h1>Life At Company</h1>
       </div>
     )
   }
 
   render() {
+    const {similarJobs} = this.state
+
     return (
       <>
         <Header />
         <div className="about-job-detail-container">
           {this.renderAboutJobDetails()}
+          <h1>Similar Jobs</h1>
+          <div>
+            {similarJobs.map(eachItem => (
+              <SimilarJobs similarJobsDetails={eachItem} key={eachItem.id} />
+            ))}
+          </div>
         </div>
       </>
     )
