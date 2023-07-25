@@ -7,7 +7,7 @@ import {Redirect} from 'react-router-dom'
 import './index.css'
 
 class LoginForm extends Component {
-  state = {username: '', password: '', errorMessage: false}
+  state = {username: '', password: '', errorMessage: ''}
 
   onChangeUserName = event => {
     this.setState({username: event.target.value})
@@ -20,8 +20,12 @@ class LoginForm extends Component {
   onSuccessLogin = jwtToken => {
     const {history} = this.props
     this.setState({errorMessage: false})
-    Cookies.set('token', jwtToken, {expires: 30})
+    Cookies.set('jwt_token', jwtToken, {expires: 30})
     history.replace('/')
+  }
+
+  onError = errorMsg => {
+    this.setState({errorMessage: errorMsg})
   }
 
   onClickLogin = async event => {
@@ -38,18 +42,20 @@ class LoginForm extends Component {
     }
     const response = await fetch(url, options)
     const data = await response.json()
+    console.log(data)
     if (response.ok === true) {
       this.onSuccessLogin(data.jwt_token)
     } else {
-      this.setState({errorMessage: true})
+      this.onError(data.error_msg)
+      // this.setState({errorMessage: true})
     }
   }
 
   render() {
     const {errorMessage} = this.state
 
-    const errorText = errorMessage && `*Username and Password didn't  match`
-    const jwtToken = Cookies.get('token')
+    // const errorText = errorMessage && `*Username and Password didn't  match`
+    const jwtToken = Cookies.get('jwt_token')
 
     if (jwtToken !== undefined) {
       return <Redirect to="/" />
@@ -63,19 +69,25 @@ class LoginForm extends Component {
             alt="website logo"
             className="website-logo"
           />
-          <p className="username-heading">USERNAME</p>
+          <label htmlFor="username" className="username-heading">
+            USERNAME
+          </label>
           <input
             type="text"
             className="input"
             placeholder="USERNAME"
             onChange={this.onChangeUserName}
+            id="username"
           />
-          <p className="username-heading">PASSWORD</p>
+          <label htmlFor="password" className="username-heading">
+            PASSWORD
+          </label>
           <input
             type="password"
             placeholder="USERNAME"
             className="input"
             onChange={this.onChangePassword}
+            id="password"
           />
           <button
             type="submit"
@@ -84,7 +96,7 @@ class LoginForm extends Component {
           >
             Login
           </button>
-          <p className="error-message">{errorText}</p>
+          <p className="error-message">{errorMessage}</p>
         </form>
       </div>
     )

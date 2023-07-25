@@ -29,22 +29,22 @@ const JobsDetails = props => {
           />
           <div>
             <h1 className="title-heading">{title}</h1>
-            <AiFillStar color=" #fbbf24" id="rating" size={20} />
-            <label htmlFor="rating" className="rating">
-              {rating}
-            </label>
+            <div className="image-type-container">
+              <AiFillStar color=" #fbbf24" size={20} />
+              <p className="rating">{rating}</p>
+            </div>
           </div>
         </div>
         <div className="package-location-type">
-          <div>
-            <MdLocationOn id="location" size={20} />
-            <label htmlFor="location" className="rating">
-              {location}
-            </label>
-            <BsFillBriefcaseFill htmlFor="jobType" size={20} />
-            <label htmlFor="jobType" className="rating">
-              {employmentType}
-            </label>
+          <div className="location-type-container">
+            <div className="image-type-container">
+              <MdLocationOn size={20} />
+              <p className="rating">{location}</p>
+            </div>
+            <div className="image-type-container">
+              <BsFillBriefcaseFill size={20} />
+              <p className="rating">{employmentType}</p>
+            </div>
           </div>
           <p>{packagePerAnnum}</p>
         </div>

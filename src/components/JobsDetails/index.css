@@ -8,13 +8,14 @@
 }
 .title-heading {
   font-family: 'Roboto';
-  font-size: 20px;
-  margin-bottom: 4px;
+  font-size: 18px;
+  padding: 0px;
+  margin-bottom: 0px;
 }
 .rating {
   font-family: 'Roboto';
   font-size: 18px;
-  margin-left: 5px;
+  margin-left: 4px;
   margin-right: 20px;
 }
 .company-logo {
@@ -34,4 +35,13 @@
 }
 .link {
   text-decoration: none;
+}
+.image-type-container {
+  display: flex;
+  align-items: center;
+  margin-top: 0px;
+}
+.location-type-container {
+  display: flex;
+  align-items: center;
 }

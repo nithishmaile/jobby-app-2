@@ -5,6 +5,7 @@
   min-height: 100vh;
   padding: 30px;
   background-color: #000000;
+  color: #ffffff;
 }
 
 .about-job-details-card {
@@ -14,6 +15,7 @@
   color: #ffffff;
   margin-top: 40px;
   padding: 15px;
+  margin-bottom: 40px;
 }
 .about-title-heading {
   font-family: 'Roboto';
@@ -40,4 +42,47 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+.about-image-type-container {
+  display: flex;
+  align-items: center;
+}
+.about-location-type-container {
+  display: flex;
+  align-items: center;
+}
+.visit-link {
+  color: #6366f1;
+  font-family: 'Roboto';
+  font-size: 20px;
+  padding: 10px;
+  text-decoration: none;
+}
+.description-website-url {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.skills-icon {
+  height: 30px;
+  width: 40px;
+  margin-right: 10px;
+}
+.unordered-list-skills {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  list-style: none;
+  width: 70%;
+}
+.list-skills {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-right: 30px;
+  margin-bottom: 40px;
+}
+.life_at_company_image {
+  width: 100%;
 }

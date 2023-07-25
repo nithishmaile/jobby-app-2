@@ -98,17 +98,22 @@ class Jobs extends Component {
       const filteredData = employmentType.filter(
         eachItem => eachItem !== event.target.id,
       )
-      this.setState(
-        prevState => ({employmentType: filteredData}),
-        this.getJobsDetails,
-      )
+      this.setState({employmentType: filteredData}, this.getJobsDetails)
     }
+  }
+
+  onClickJobsRetry = () => {
+    this.getJobsDetails()
+  }
+
+  onClickProfileRetry = () => {
+    this.getProfile()
   }
 
   getJobsDetails = async () => {
     const {salaryRange, searchInput, employmentType} = this.state
     this.setState({jobsApiStatus: apiStatus.inProgress})
-    const jwtToken = Cookies.get('token')
+    const jwtToken = Cookies.get('jwt_token')
     const url = `https://apis.ccbp.in/jobs?employment_type=${employmentType}&minimum_package=${salaryRange}&search=${searchInput}`
     const options = {
       method: 'GET',
@@ -116,20 +121,22 @@ class Jobs extends Component {
         Authorization: `Bearer ${jwtToken}`,
       },
     }
+
     const response = await fetch(url, options)
-    const data = await response.json()
-    const fetchedData = data.jobs
-    const updateJobDetails = fetchedData.map(eachObj => ({
-      companyLogoUrl: eachObj.company_logo_url,
-      employmentType: eachObj.employment_type,
-      jobDescription: eachObj.job_description,
-      packagePerAnnum: eachObj.package_per_annum,
-      id: eachObj.id,
-      title: eachObj.title,
-      location: eachObj.location,
-      rating: eachObj.rating,
-    }))
     if (response.ok === true) {
+      const data = await response.json()
+      const fetchedData = data.jobs
+      const updateJobDetails = fetchedData.map(eachObj => ({
+        companyLogoUrl: eachObj.company_logo_url,
+        employmentType: eachObj.employment_type,
+        jobDescription: eachObj.job_description,
+        packagePerAnnum: eachObj.package_per_annum,
+        id: eachObj.id,
+        title: eachObj.title,
+        location: eachObj.location,
+        rating: eachObj.rating,
+      }))
+
       this.setState({
         jobsApiStatus: apiStatus.success,
         jobsDetails: updateJobDetails,
@@ -142,7 +149,7 @@ class Jobs extends Component {
   getProfile = async () => {
     this.setState({profileStatus: apiStatus.inProgress})
     const profileUrl = 'https://apis.ccbp.in/profile'
-    const jwtToken = Cookies.get('token')
+    const jwtToken = Cookies.get('jwt_token')
     const options = {
       method: 'GET',
       headers: {
@@ -161,16 +168,37 @@ class Jobs extends Component {
     }
   }
 
-  renderJobsDetails = () => {
-    const {jobsDetails} = this.state
+  noJobsContainer = () => (
+    <u1 className="no-jobs-container">
+      <img
+        src="https://assets.ccbp.in/frontend/react-js/no-jobs-img.png"
+        alt="no jobs"
+        className="no-jobs-image"
+      />
+      <h1 className="no-jobs-heading">No Jobs Found</h1>
+      <p className="no-jobs-para">
+        We could not find any jobs. Try other filters
+      </p>
+    </u1>
+  )
 
+  jobDetails = () => {
+    const {jobsDetails} = this.state
     return (
-      <div>
+      <ul className="unordered-jobs-details">
         {jobsDetails.map(eachObj => (
           <JobsDetails jobsDetailsList={eachObj} key={eachObj.id} />
         ))}
-      </div>
+      </ul>
     )
+  }
+
+  renderJobsDetails = () => {
+    const {jobsDetails} = this.state
+    if (jobsDetails.length === 0) {
+      return this.noJobsContainer()
+    }
+    return this.jobDetails()
   }
 
   renderProfileDetails = () => {
@@ -198,28 +226,38 @@ class Jobs extends Component {
 
   renderProfileFailure = () => (
     <div className="profile-failure-container">
-      <button type="button" className="retry-button">
+      <button
+        type="button"
+        className="retry-button"
+        onClick={this.onClickProfileRetry}
+      >
         Retry
       </button>
     </div>
   )
 
   renderJobsFailure = () => (
-    <div>
+    <div className="jobs-failure-container">
       <img
         src="https://assets.ccbp.in/frontend/react-js/failure-img.png"
         alt="failure view"
       />
-      <h1>Oops! SomeThing Went Wrong</h1>
-      <p>We cannot seem to find the page you are looking for.</p>
-      <button type="button" className="find-jobs-button">
+      <h1 className="jobs-failure-heading">Oops! SomeThing Went Wrong</h1>
+      <p className="jobs-failure-para">
+        We cannot seem to find the page you are looking for
+      </p>
+      <button
+        type="button"
+        className="find-jobs-button"
+        onClick={this.onClickJobsRetry}
+      >
         Retry
       </button>
     </div>
   )
 
   render() {
-    const {profileStatus, jobsApiStatus, employmentType} = this.state
+    const {profileStatus, jobsApiStatus} = this.state
 
     const renderJobsDetailsView = () => {
       switch (jobsApiStatus) {
@@ -274,38 +312,47 @@ class Jobs extends Component {
               <h1 className="employment-main-type-heading">
                 Type of Employment
               </h1>
-              {employmentTypesList.map(eachType => (
-                <div>
-                  <input
-                    type="checkbox"
-                    id={eachType.employmentTypeId}
-                    onChange={this.onChangeCheckBox}
+              <ul className="unordered-list">
+                {employmentTypesList.map(eachType => (
+                  <li
+                    className="type-of-employment-list"
                     key={eachType.employmentTypeId}
-                  />
-                  <label
-                    htmlFor={eachType.employmentTypeId}
-                    className="employment-type"
                   >
-                    {eachType.label}
-                  </label>
-                </div>
-              ))}
+                    <input
+                      type="checkbox"
+                      id={eachType.employmentTypeId}
+                      onChange={this.onChangeCheckBox}
+                    />
+                    <label
+                      htmlFor={eachType.employmentTypeId}
+                      className="employment-type"
+                    >
+                      {eachType.label}
+                    </label>
+                  </li>
+                ))}
+              </ul>
               <hr />
               <h1 className="employment-main-type-heading">Salary Range</h1>
-              {salaryRangesList.map(eachType => (
-                <div>
-                  <input
-                    type="radio"
-                    id={eachType.label}
-                    // value={eachType.salaryRangeId}
-                    name="salaryRange"
-                    onChange={this.onChangeRadio}
-                  />
-                  <label htmlFor={eachType.label} className="employment-type">
-                    {eachType.label}
-                  </label>
-                </div>
-              ))}
+              <ul>
+                {salaryRangesList.map(eachType => (
+                  <li key={eachType.label}>
+                    <input
+                      type="radio"
+                      id={eachType.salaryRangeId}
+                      value={eachType.salaryRangeId}
+                      name="option"
+                      onChange={this.onChangeRadio}
+                    />
+                    <label
+                      htmlFor={eachType.salaryRangeId}
+                      className="employment-type"
+                    >
+                      {eachType.label}
+                    </label>
+                  </li>
+                ))}
+              </ul>
             </div>
           </div>
           <div>{renderJobsDetailsView()}</div>

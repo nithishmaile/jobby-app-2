@@ -14,7 +14,7 @@ const Header = props => {
   const {history} = props
 
   const onClickLogout = () => {
-    Cookies.remove('token')
+    Cookies.remove('jwt_token')
     history.replace('/login')
   }
 
@@ -28,21 +28,32 @@ const Header = props => {
             className="nav-logo"
           />
         </Link>
-        <div className="react-icons">
-          <Link to="/">
-            <AiFillHome color="#ffffff" size={34} />
-          </Link>
-          <Link to="/jobs">
-            <BsFillBriefcaseFill
-              color="#ffffff"
-              size={34}
-              className="react-icons"
-            />
-          </Link>
-          <Link to="/login">
-            <FiLogOut color="#ffffff" size={34} className="react-icons" />
-          </Link>
-        </div>
+        <ul className="react-icons-container">
+          <li className="react-icons-list">
+            <Link to="/">
+              <AiFillHome color="#ffffff" size={34} />
+            </Link>
+          </li>
+          <li className="react-icons-list">
+            <Link to="/jobs">
+              <BsFillBriefcaseFill
+                color="#ffffff"
+                size={34}
+                className="react-icons"
+              />
+            </Link>
+          </li>
+          <li className="react-icons-list">
+            <Link to="/login">
+              <FiLogOut
+                color="#ffffff"
+                size={34}
+                className="react-icons"
+                onClick={onClickLogout}
+              />
+            </Link>
+          </li>
+        </ul>
       </nav>
       <nav className="desktop-nav-container">
         <img
